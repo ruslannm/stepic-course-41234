@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define MAXN 10005
+#define MAXN 100005
 //Построение кучи
 
 int main() {
@@ -14,11 +14,15 @@ int main() {
 	int result[MAXN][2];
 	int a[MAXN];
 	
-	scanf("%d", &n);
-//	n = 6;
+//	scanf("%d", &n);
+	n = 100000;
 	i = -1;
 	while (++i < n)
-		scanf("%d", &a[i]);
+	{
+		a[i] = n - i;
+		//scanf("%d", &a[i]);
+	}
+		
 ///7 6 5 4 3 2
 /*	a[0] = 7;
 	a[1] = 6;
@@ -54,7 +58,6 @@ int main() {
 				++j;
 		}
 	}
-//	tmp = result.size();
 	printf("%d\n", i_result);
 	i = -1;
 	while (++i < i_result)
