@@ -1,25 +1,22 @@
 #include <iostream>
 #include <vector>
-#include <list>
 #include <string>
-#define MAXN	10000005
 #define MOD		1000000007
 #define X		263
 
 //Поиск образца в тексте
 
-int hash(std::string s, int start, int length, std::vector<int> pow)
+long long hash(std::string s, int start, int length, std::vector<long long> pow)
 {
-	int i;
 	long long ret;
-	long long monom;
+	int i;
 
 	ret = 0;
-
-	while (start < length)
+	i = 0;
+	while (i < length)
 	{
-		ret = (ret + (s[start++] * monom) % MOD) % MOD;
-		monom = (monom * X) % MOD;
+		ret = (ret + (s[start + i] * pow[i]) % MOD) % MOD;
+		i++;
 	}
 	return (ret);
 }
@@ -33,33 +30,31 @@ int str_equal(std::string text, int start, int length, std::string pattern)
 	{
 		if (text[start + i] != pattern[i])
 			return 0;
+		i++;
 	}
 	return 1;
 }
 
 int main() {
 	int i;
-	int l_sise;
-	int n;
-	int m;
-	int exists;
 	int p;
 	int t;
-	int h_p;
-	int t;
+	long long h_p;
 	std::string pattern;
 	std::string text;
 
-	std::cin >> pattern;
-	std::cin >> text;
+	//std::cin >> pattern;
+	//std::cin >> text;
+	pattern = "Test";
+	text = "testTesttesT";
 	p = pattern.size();
 	t = text.size();
-	std::vector<int> pow(p);
+	std::vector<long long> pow(p);
 	i = 0;
 	pow[i] = 1;
 	while (++i < p)
 		pow[i] = (pow[i - 1] * X) % MOD;
-	std::vector<int> h_map(t - p + 1);
+	std::vector<long long> h_map(t - p + 1);
 	std::vector<int> result;
 	h_p = hash(pattern, 0, p, pow);
 	i = t - p;
@@ -71,8 +66,15 @@ int main() {
 	}
 	while (--i >= 0)
 	{
-
-
+		h_map[i] = ((((h_map[i + 1] - (text[i + p] * pow[p - 1]) % MOD + MOD) % MOD) * X) % MOD + text[i]) % MOD;
+		if (h_p == h_map[i])
+		{
+			if (str_equal(text, i, p, pattern))
+				result.push_back(i);
+		}
 	}
+	i = result.size();
+	while (--i >= 0)
+		printf("%d ", result[i]);
 	return 0;
 }
